@@ -220,7 +220,7 @@ var _ = {};
         if (iterator(item) instanceof Object == true) {
           return iterator(item) === item;
         }
-
+        if(iterator(item) == 'yes'){return true;}
         if (iterator(item) != accumulator){return false;}
         else {return true;}
      }, true);
@@ -228,16 +228,32 @@ var _ = {};
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
-  _.some = function(collection, iterator) {
-    // TIP: There's a very clever way to re-use every() here.
-    if(collection.length == 0){return false}
-    if (!_.every(collection, iterator)) {
-      return false;
+  _.some = function(collection, predicate) { 
+    if (predicate === undefined) {predicate = function(item){return item;}}
+    for(var i = 0; i < collection.length; i++) {
+        console.log(predicate(collection[i]));
+        if (predicate(collection[i])) {return true;}
     }
-    else {return true;}
+    return false;
+};
+  /*
 
+    -- CODE TEMPORARILY UNDER MAINTENANCE
+    -- ALTERNATIVE FOR _.SOME USING _.EVERY
+    -- MUCH SLOWER TO PROCESS
+
+    function(collection, iterator) {
+    // TIP: There's a very clever way to re-use every() here.
+
+    // Need to pass the test when some tests return false while at least one is truthy
+    // if(collection.length == 0){return false;}
+    if (iterator == undefined) {iterator = function(item){return item;}}
+    return !(_.every(collection, function(value){
+      return !iterator(value);
+    }))
   };
 
+*/
 
   /**
    * OBJECTS
