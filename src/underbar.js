@@ -274,11 +274,29 @@ var _ = {};
   //     bla: "even more stuff"
   //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function(obj) {
+    // Iterate through all obj following the first one
+    for (var i = 1; i < arguments.length; i++){
+      var source = arguments[i];
+      for(var key in source){
+        obj[key] = source[key];
+      }
+    }
+    return obj;
   };
 
   // Like extend, but doesn't ever overwrite a key that already
   // exists in obj
   _.defaults = function(obj) {
+    for (var i = 1; i < arguments.length; i++){
+      var source = arguments[i];
+      for(var key in source){
+        // Check if main object already contains key
+        if(obj[key] === undefined){
+          obj[key] = source[key];
+        }
+      }
+    }
+    return obj;
   };
 
 
@@ -320,6 +338,21 @@ var _ = {};
   // already computed the result for the given argument and return that value
   // instead if possible.
   _.memoize = function(func) {
+    var result;
+    var argtList = [];
+    return function() {
+
+      for (var i = 0; i < arguments.length; i++){
+
+        if (!_.contains(argtList, arguments[i])){
+          argtList.push(arguments[i]);
+          result = func.apply(this, arguments);
+        }
+
+      return result;
+      }
+
+    };
   };
 
   // Delays a function for the given number of milliseconds, and then calls
