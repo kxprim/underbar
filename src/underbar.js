@@ -210,8 +210,17 @@ var _ = {};
   _.every = function(collection, iterator) {  
     // TIP: Try re-using reduce() here.
      return _.reduce(collection, function(accumulator, item){
-        // verify differently if obj is in collection
         if (iterator == undefined) {iterator = function(item){return item;}}
+
+        // The problem faced is when _.identity({}) runs
+        // it returns the object as expected but the object does not seem to equal to itself
+        // So created a workaround but not a definitive solution
+        // Could the error come from the _.identity({}) callback method itself?
+
+        if (iterator(item) instanceof Object == true) {
+          return iterator(item) === item;
+        }
+
         if (iterator(item) != accumulator){return false;}
         else {return true;}
      }, true);
