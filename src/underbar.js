@@ -228,11 +228,11 @@ var _ = {};
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
-  _.some = function(collection, predicate) { 
-    if (predicate === undefined) {predicate = function(item){return item;}}
+  _.some = function(collection, iterator) { 
+    if (iterator === undefined) {iterator = function(item){return item;}}
     for(var i = 0; i < collection.length; i++) {
-        console.log(predicate(collection[i]));
-        if (predicate(collection[i])) {return true;}
+        //console.log(iterator(collection[i]));
+        if (iterator(collection[i])) {return true;}
     }
     return false;
 };
